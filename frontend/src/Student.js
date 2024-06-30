@@ -5,7 +5,7 @@ function Student() {
 
     useEffect(() => {
         axios.get('http://localhost:8081/')//The Trigger point
-            .then(res => console.log(res))
+            .then(res => console.log(res.data))
             .catch(err => console.log(err));
     }, [])
 

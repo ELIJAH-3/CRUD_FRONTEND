@@ -6,7 +6,19 @@ const app = express();
 
 app.use(cors());
 
-app.get("/",(req,res) => {
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    databse: "crud01",
+})
+
+app.get("/", (req, res) => {
+    const sqlQueryString= "SELECT * from student";
+    db.query(sqlQueryString, (err, data) =>{
+        if(err) return res.json(err);
+        return res.json(data);
+    })
     res.json("Hello from backend");
 })
 

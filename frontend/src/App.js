@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Student from './Student';
 
+
+// run command "npm start in the frontend folder to access Student.js"
 function App() {
   return (
     <div className="App">

@@ -6,13 +6,6 @@ const app = express();
 
 app.use(cors());
 
-mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    databse: "crud01",
-})
-
 app.get("/",(req,res) => {
     res.json("Hello from backend");
 })

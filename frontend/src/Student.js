@@ -1,14 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
+
 
 function Student() {
+    const [currentState, setStudentsData] = useState([])
 
     useEffect(() => {
         axios.get('http://localhost:8081/')//The Trigger point
             .then(res => {
                 res.data.forEach(element => {
-                    console.log(element.ID, element.Name, element.Email);
+                    console.log("Printing \nID, Name, Email");
+                    console.log(element.ID, element.NAME, element.EMAIL);
                 });
+                setStudentsData(res.data);
             })
             .catch(err => console.log(err));
     }, [])
@@ -16,18 +21,31 @@ function Student() {
     return (
         <div className='d-flex vh-100 bg-primary justify-content-center align-item-center p-200'>
             <div className='w-50 bg-white rounded p-3'>
+                <Link to='/create' className='btn btn-success'>ADD +</Link>
                 <table className='table'>
                     <thead>
                         <tr>
                             <th>NAME</th>
                             <th>EMAIL</th>
+                            <th>ACTION</th>
                         </tr>
                     </thead>
 
                     <tbody>
+                        {
+                            currentState.map((data, i) => (
+                                <tr key={data.ID}>
+                                    <td>{data.NAME}</td>
+                                    <td>{data.ID}</td>
+                                    <td>
+                                        <button className='btn btn-primary '>UPDATE</button>
+                                        <button className='btn btn-danger ms-2'>DELETE</button>
+                                    </td>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
-                <button className='btn btn-success'>ADD +</button>
             </div>
         </div>
     )

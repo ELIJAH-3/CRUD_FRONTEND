@@ -14,12 +14,12 @@ const db = mysql.createConnection({
 })
 
 app.get("/", (req, res) => {
-    const sqlQueryString= "SELECT * from student";
-    db.query(sqlQueryString, (err, data) =>{
-        if(err) return res.json(err);
+    const sqlQueryString = "SELECT * from student";
+    db.query(sqlQueryString, (err, data) => {
+        if (err) return res.json(err);
         return res.json(data);
     })
-    res.json("Hello from backend");
+    // res.json("Hello from backend");
 })
 
 app.listen(8081, () => {

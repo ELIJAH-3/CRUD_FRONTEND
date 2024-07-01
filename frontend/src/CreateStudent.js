@@ -8,8 +8,8 @@ function CreateStudent() {
     const navigate = useNavigate();
 
     function handleSubmit(event) {
-        console.log('handling Submit Event')
-        console.log('New values to be inserted are- name=' + name + ', email=' + email)
+        console.log('CreateStudent.js: handling Submit Event')
+        console.log('CreateStudent.js: New values to be inserted are- name=' + name + ', email=' + email)
         event.preventDefault();
         axios.post('http://localhost:8081/createNewStudent', { name, email })
             .then(res => {

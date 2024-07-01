@@ -48,6 +48,24 @@ app.post('/createNewStudent', (req, res) => {
     // res.json("Hello from backend");
 })
 
+app.post('/runsqlquery', (req, res) => {
+    console.log("Runsqlquery.js" + ", queryString=" + req.body.queryString);
+    const sqlQueryString = req.body.queryString;
+
+    db.query(sqlQueryString, (err, data) => {
+        if (err) return res.json(err);
+        if (logger) {
+            console.log(`[${currentTime}] Query:`, sqlQueryString);
+            data.forEach(elements => {
+                console.log(`[${currentTime}] Result:`, elements);
+            });
+        }
+        return res.json(data); // sends Response
+    })
+
+    // res.json("Hello from backend");
+})
+
 app.listen(8081, () => {
     console.log("listening to 8081");
     // run command "node server.js" to start the server

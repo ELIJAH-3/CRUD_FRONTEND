@@ -15,11 +15,21 @@ const db = mysql.createConnection({
     database: "crud01",
 })
 
+let logger = true;
+const currentTime = new Date().toLocaleString();
+
+
 app.get("/", (req, res) => {
     const sqlQueryString = "SELECT * from student order by NAME desc";
     db.query(sqlQueryString, (err, data) => {
         if (err) return res.json(err);
-        return res.json(data);
+        if (logger) {
+            console.log(`[${currentTime}] Query:`, sqlQueryString);
+            data.forEach(elements => {
+                console.log(`[${currentTime}] Result:`, elements);
+            });
+        }
+        return res.json(data); // sends Response
     })
     // res.json("Hello from backend");
 })

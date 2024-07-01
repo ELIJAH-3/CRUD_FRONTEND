@@ -4,7 +4,9 @@ const mysql = require("mysql");
 
 const app = express();
 
+app.use(express.json());
 app.use(cors());
+
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -14,8 +16,22 @@ const db = mysql.createConnection({
 })
 
 app.get("/", (req, res) => {
-    const sqlQueryString = "SELECT * from student";
+    const sqlQueryString = "SELECT * from student order by NAME desc";
     db.query(sqlQueryString, (err, data) => {
+        if (err) return res.json(err);
+        return res.json(data);
+    })
+    // res.json("Hello from backend");
+})
+
+app.post('/createNewStudent', (req, res) => {
+    console.log("Entered Create New Student with name=" + req.body.name + ", email=" + req.body.email);
+    const sqlQueryString = "INSERT INTO student (`NAME`, `EMAIL`) VALUES (?)";
+    const values = [
+        req.body.name,
+        req.body.email
+    ]
+    db.query(sqlQueryString, [values], (err, data) => {
         if (err) return res.json(err);
         return res.json(data);
     })

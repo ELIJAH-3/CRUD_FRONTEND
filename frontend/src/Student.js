@@ -9,10 +9,11 @@ function Student() {
     useEffect(() => {
         axios.get('http://localhost:8081/')//The Trigger point
             .then(res => {
-                res.data.forEach(element => {
+                console.log(res.data);
+                /*res.data.forEach(element => {
                     console.log("Printing \nID, Name, Email");
                     console.log(element.ID, element.NAME, element.EMAIL);
-                });
+                });*/
                 setStudentsData(res.data);
             })
             .catch(err => console.log(err));
@@ -25,8 +26,8 @@ function Student() {
                 <table className='table'>
                     <thead>
                         <tr>
-                            <th>NAME</th>
-                            <th>EMAIL</th>
+                            <th className='text-start'>NAME</th>
+                            <th className='text-start'>EMAIL</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
@@ -34,10 +35,10 @@ function Student() {
                     <tbody>
                         {
                             currentState.map((data, i) => (
-                                <tr key={data.ID}>
-                                    <td>{data.NAME}</td>
-                                    <td>{data.ID}</td>
-                                    <td>
+                                <tr key={data.ID} className='text-start'>
+                                    <td >{data.NAME}</td>
+                                    <td>{data.EMAIL}</td>
+                                    <td className='text-center'>
                                         <button className='btn btn-primary '>UPDATE</button>
                                         <button className='btn btn-danger ms-2'>DELETE</button>
                                     </td>

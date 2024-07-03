@@ -20,13 +20,13 @@ const currentTime = new Date().toLocaleString();
 
 
 app.get("/", (req, res) => {
-    const sqlQueryString = "SELECT * from student order by NAME desc";
+    const sqlQueryString = "SELECT * from student order by NAME asc";
     db.query(sqlQueryString, (err, data) => {
         if (err) return res.json(err);
         if (logger) {
-            console.log(`[${currentTime}] Query:`, sqlQueryString);
+            console.log(`[${currentTime}] server.js Query:`, sqlQueryString);
             data.forEach(elements => {
-                console.log(`[${currentTime}] Result:`, elements);
+                console.log(`[${currentTime}] server.js Result:`, elements);
             });
         }
         return res.json(data); // sends Response
@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 })
 
 app.post('/createNewStudent', (req, res) => {
-    console.log("Entered Create New Student with name=" + req.body.name + ", email=" + req.body.email);
+    console.log(`[${currentTime}] server.js Entered Create New Student with name=` + req.body.name + ", email=" + req.body.email);
     const sqlQueryString = "INSERT INTO student (`NAME`, `EMAIL`) VALUES (?)";
     const values = [
         req.body.name,
@@ -49,16 +49,19 @@ app.post('/createNewStudent', (req, res) => {
 })
 
 app.post('/runsqlquery', (req, res) => {
-    console.log("Runsqlquery.js" + ", queryString=" + req.body.queryString);
+    console.log(`[${currentTime}] server.js ` + ", queryString=" + req.body.queryString);
     const sqlQueryString = req.body.queryString;
 
     db.query(sqlQueryString, (err, data) => {
-        if (err) return res.json(err);
+        if (err) {
+            console.log(`[${currentTime}] server.js error while executing query: `, req.body.queryString);
+            console.log(`[${currentTime}] server.js ERROR: `, err.message);
+            return res.json(err)
+        };
+
         if (logger) {
-            console.log(`[${currentTime}] Query:`, sqlQueryString);
-            data.forEach(elements => {
-                console.log(`[${currentTime}] Result:`, elements);
-            });
+            console.log(`[${currentTime}] server.js Query:`, sqlQueryString);
+            console.log(`[${currentTime}] server.js Result:`, data);
         }
         return res.json(data); // sends Response
     })
@@ -67,6 +70,6 @@ app.post('/runsqlquery', (req, res) => {
 })
 
 app.listen(8081, () => {
-    console.log("listening to 8081");
+    console.log(`[${currentTime}] server.js listening to 8081`);
     // run command "node server.js" to start the server
 })

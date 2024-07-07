@@ -10,7 +10,6 @@ function Runsqlquery() {
 
     function handleSubmit(event) {
         console.log('Runsqlquery.js: handling Submit Event')
-        // console.log('New values to be inserted are- name=' + name + ', email=' + email)
         event.preventDefault();
         axios.post('http://localhost:8081/runsqlquery', { queryString })
             .then(res => {
@@ -19,6 +18,9 @@ function Runsqlquery() {
                 navigate('/runsqlquery');
             }).catch(err => console.log(err));
     }
+    function handleGoToHomepage() {
+        navigate('/'); // Navigate to homepage
+    }
     return (
         <div className='d-flex vh-100 bg-primary justify-content-center align-item-center p-200'>
             <div className='w-50 bg-white rounded p-3'>
@@ -26,6 +28,7 @@ function Runsqlquery() {
                     <h2>WRITE SQL QUERY</h2>
                     <div className='mb-2 text-left'>
                         <textarea
+                            id="queryString"
                             rows="5"  // Set the number of rows for initial height
                             placeholder='Write a SQL query here'
                             className='form-control'
@@ -33,7 +36,8 @@ function Runsqlquery() {
                             style={{ resize: 'vertical', width: '100%', padding: '8px' }}  // Enable vertical resizing
                         />
                     </div>
-                    <button className='btn btn-success'>EXECUTE QUERY</button>
+                    <button className='btn btn-success m-3' >EXECUTE QUERY</button>
+                    <button type='button' className='btn btn-success m-3' onClick={handleGoToHomepage} >GO TO HOMEPAGE</button>
                 </form>
             </div>
         </div>

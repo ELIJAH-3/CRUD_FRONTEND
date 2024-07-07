@@ -20,7 +20,7 @@ const currentTime = new Date().toLocaleString();
 
 
 app.get("/", (req, res) => {
-    const sqlQueryString = "SELECT * from student order by NAME asc";
+    const sqlQueryString = "SELECT * from student order by id desc";
     db.query(sqlQueryString, (err, data) => {
         if (err) return res.json(err);
         if (logger) {
@@ -28,6 +28,7 @@ app.get("/", (req, res) => {
             data.forEach(elements => {
                 console.log(`[${currentTime}] server.js Result:`, elements);
             });
+            console.log();
         }
         return res.json(data); // sends Response
     })

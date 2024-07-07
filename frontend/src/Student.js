@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, /*useNavigate  */ } from 'react-router-dom'
 
 
 function Student() {
     const [currentState, setStudentsData] = useState([])
+    // const navigate = useNavigate();
+
+    const handleRefresh = () => {
+        console.log('handling Refresh');
+        window.location.reload()
+        // navigate('/'); // Navigate to the homepage route
+    };
 
     useEffect(() => {
         axios.get('http://localhost:8081/')//The Trigger point
@@ -14,7 +21,12 @@ function Student() {
                     console.log("Printing \nID, Name, Email");
                     console.log(element.ID, element.NAME, element.EMAIL);
                 });*/
-                setStudentsData(res.data);
+                if (Array.isArray(res.data)) {
+                    setStudentsData(res.data);
+                } else {
+                    console.error('Data is not an array:', res.data);
+                    setStudentsData([]);
+                }
             })
             .catch(err => console.log(err));
     }, [])
@@ -23,6 +35,7 @@ function Student() {
         <div className='d-flex vh-100 bg-primary justify-content-center align-item-center p-200'>
             <div className='w-50 bg-white rounded p-3'>
                 <Link to='/create' className='btn btn-success'>ADD +</Link>
+                <button className='btn btn-primary ms-2' onClick={handleRefresh}>Refresh</button>
                 <table className='table'>
                     <thead>
                         <tr>

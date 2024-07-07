@@ -6,14 +6,46 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+let db;
+let retryCount = 0;
+const maxRetries = 5; // Set the maximum number of retries
 
+function connectToDatabase() {
+    db = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "crud01",
+    });
 
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "crud01",
-})
+    db.connect(err => {
+        if (err) {
+            console.error(`[${new Date().toLocaleString()}] Error connecting to MySQL:`, err.message);
+            retryCount++;
+            if (retryCount < maxRetries) {
+                console.log(`[${new Date().toLocaleString()}] Retrying connection in 5 seconds... (Attempt ${retryCount} of ${maxRetries})`);
+                setTimeout(connectToDatabase, 5000); // Retry connection after 5 seconds
+            } else {
+                console.error(`[${new Date().toLocaleString()}] Maximum retry Attempt = ${maxRetries} reached. Could not connect to MySQL.`);
+                process.exit(1);
+            }
+        } else {
+            console.log(`[${new Date().toLocaleString()}] Connected to MySQL server.`);
+        }
+    });
+
+    db.on('error', err => {
+        console.error(`[${new Date().toLocaleString()}] MySQL error:`, err.message);
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            console.log(`[${new Date().toLocaleString()}] Attempting to reconnect to MySQL server...`);
+            connectToDatabase();
+        } else {
+            throw err;
+        }
+    });
+};
+
+connectToDatabase();
 
 let logger = true;
 const currentTime = new Date().toLocaleString();

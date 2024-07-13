@@ -30,16 +30,19 @@ function connectToDatabase() {
                 process.exit(1);
             }
         } else {
+            retryCount = 0;
             console.log(`[${new Date().toLocaleString()}] Connected to MySQL server.`);
         }
     });
 
     db.on('error', err => {
         console.error(`[${new Date().toLocaleString()}] MySQL error:`, err.message);
-        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+        if (err.code === 'PROTOCOL_CONNECTION_LOST' || err.code === 'ECONNRESET') {
+            console.error(`[${new Date().toLocaleString()}] server.js Connection Lost with SQL SERVER. ERROR CODE=`, err.code);
             console.log(`[${new Date().toLocaleString()}] Attempting to reconnect to MySQL server...`);
             connectToDatabase();
         } else {
+            console.error(`[${new Date().toLocaleString()}] server.js UNKNOWN ERROR`);
             throw err;
         }
     });
@@ -48,7 +51,6 @@ function connectToDatabase() {
 connectToDatabase();
 
 let logger = true;
-const currentTime = new Date().toLocaleString();
 
 
 app.get("/", (req, res) => {
@@ -56,9 +58,9 @@ app.get("/", (req, res) => {
     db.query(sqlQueryString, (err, data) => {
         if (err) return res.json(err);
         if (logger) {
-            console.log(`[${currentTime}] server.js Query:`, sqlQueryString);
+            console.log(`[${new Date().toLocaleString()}] server.js Query:`, sqlQueryString);
             data.forEach(elements => {
-                console.log(`[${currentTime}] server.js Result:`, elements);
+                console.log(`[${new Date().toLocaleString()}] server.js Result:`, elements);
             });
             console.log();
         }
@@ -68,7 +70,7 @@ app.get("/", (req, res) => {
 })
 
 app.post('/createNewStudent', (req, res) => {
-    console.log(`[${currentTime}] server.js Entered Create New Student with name=` + req.body.name + ", email=" + req.body.email);
+    console.log(`[${new Date().toLocaleString()}] server.js Entered Create New Student with name=` + req.body.name + ", email=" + req.body.email);
     const sqlQueryString = "INSERT INTO student (`NAME`, `EMAIL`) VALUES (?)";
     const values = [
         req.body.name,
@@ -82,19 +84,19 @@ app.post('/createNewStudent', (req, res) => {
 })
 
 app.post('/runsqlquery', (req, res) => {
-    console.log(`[${currentTime}] server.js ` + ", queryString=" + req.body.queryString);
+    console.log(`[${new Date().toLocaleString()}] server.js ` + ", queryString=" + req.body.queryString);
     const sqlQueryString = req.body.queryString;
 
     db.query(sqlQueryString, (err, data) => {
         if (err) {
-            console.log(`[${currentTime}] server.js error while executing query: `, req.body.queryString);
-            console.log(`[${currentTime}] server.js ERROR: `, err.message);
+            console.log(`[${new Date().toLocaleString()}] server.js error while executing query: `, req.body.queryString);
+            console.log(`[${new Date().toLocaleString()}] server.js ERROR: `, err.message);
             return res.json(err)
         };
 
         if (logger) {
-            console.log(`[${currentTime}] server.js Query:`, sqlQueryString);
-            console.log(`[${currentTime}] server.js Result:`, data);
+            console.log(`[${new Date().toLocaleString()}] server.js Query:`, sqlQueryString);
+            console.log(`[${new Date().toLocaleString()}] server.js Result:`, data);
         }
         return res.json(data); // sends Response
     })
@@ -103,6 +105,6 @@ app.post('/runsqlquery', (req, res) => {
 })
 
 app.listen(8081, () => {
-    console.log(`[${currentTime}] server.js listening to 8081`);
+    console.log(`[${new Date().toLocaleString()}] server.js listening to 8081`);
     // run command "node server.js" to start the server
 })

@@ -14,7 +14,7 @@ function Student() {
     };
 
     useEffect(() => {
-        axios.get('http://localhost:8081/')//The Trigger point
+        axios.get('http://localhost:8081/homepage')//The Trigger point
             .then(res => {
                 console.log(res.data);
                 /*res.data.forEach(element => {
@@ -52,7 +52,7 @@ function Student() {
                                     <td >{data.NAME}</td>
                                     <td>{data.EMAIL}</td>
                                     <td className='text-center'>
-                                        <button className='btn btn-primary '>UPDATE</button>
+                                        <Link to={`update/${data.ID}`} className='btn btn-primary '>UPDATE</Link>
                                         <button className='btn btn-danger ms-2'>DELETE</button>
                                     </td>
                                 </tr>

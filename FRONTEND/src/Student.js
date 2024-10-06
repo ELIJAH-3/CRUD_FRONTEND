@@ -41,7 +41,7 @@ function Student() {
     }
 
     return (
-        <div className='d-flex vh-100 bg-primary justify-content-center align-item-center p-200'>
+        <div className='d-flex vh-100 justify-content-center align-item-center p-200'>
             <div className='w-50 bg-white rounded p-3'>
                 <Link to='/create' className='btn btn-success'>ADD +</Link>
                 <button className='btn btn-primary ms-2' onClick={handleRefresh}>Refresh</button>
@@ -62,7 +62,9 @@ function Student() {
                                     <td>{data.EMAIL}</td>
                                     <td className='text-center'>
                                         <Link to={`update/${data.ID}`} className='btn btn-primary '>UPDATE</Link>
-                                        <button className='btn btn-danger ms-2' onClick={ e => handleDelete(data.ID)}>DELETE</button>
+                                        <button className='btn ms-2' 
+                                                style={{ backgroundColor: '#B22222', borderColor: '#B22222', color: 'white'}}
+                                                onClick={ e => handleDelete(data.ID)}>DELETE</button>
                                     </td>
                                 </tr>
                             ))

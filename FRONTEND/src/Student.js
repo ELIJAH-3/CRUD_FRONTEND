@@ -16,7 +16,6 @@ function Student() {
     useEffect(() => {
         axios.get('http://localhost:8081/homepage')//The Trigger point
             .then(res => {
-                console.log(`Student.js :Homepage fetching success!!`);
                 console.log(res.data);
                 /*res.data.forEach(element => {
                     console.log("Printing \nID, Name, Email");

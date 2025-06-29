@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link, /*useNavigate  */ } from 'react-router-dom'
+const API_BASE = process.env.REACT_APP_API_URL;
 
 
 function Student() {
@@ -14,7 +15,8 @@ function Student() {
     };
 
     useEffect(() => {
-        axios.get('http://localhost:8081/homepage')//The Trigger point
+        console.log(API_BASE);
+        axios.get(`${API_BASE}/homepage`)//The Trigger point
             .then(res => {
                 console.log(res.data);
                 /*res.data.forEach(element => {
@@ -33,7 +35,7 @@ function Student() {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete (`http://localhost:8081/deleteStudent/${id}`);
+            await axios.delete (`${API_BASE}/deleteStudent/${id}`);
             window.location.reload(); 
         } catch (err) {
             console.log(err);

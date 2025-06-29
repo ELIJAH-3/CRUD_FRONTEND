@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-
+const API_BASE = process.env.REACT_APP_API_URL;
 
 
 function Runsqlquery() {
@@ -11,7 +11,7 @@ function Runsqlquery() {
     function handleSubmit(event) {
         console.log('Runsqlquery.js: handling Submit Event')
         event.preventDefault();
-        axios.post('http://localhost:8081/runsqlquery', { queryString })
+        axios.post(`${API_BASE}/runsqlquery`, { queryString })
             .then(res => {
                 console.log("Runsqlquery.js: queryString-", queryString);
                 console.log("Runsqlquery.js: Response of Post request ", res.data);

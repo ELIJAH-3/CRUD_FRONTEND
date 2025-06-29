@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+const API_BASE = process.env.REACT_APP_API_URL;
 
 function CreateStudent() {
     const [name, setName] = useState('');
@@ -11,7 +12,7 @@ function CreateStudent() {
         console.log('CreateStudent.js: handling Submit Event')
         console.log('CreateStudent.js: New values to be inserted are- name=' + name + ', email=' + email)
         event.preventDefault();
-        axios.post('http://localhost:8081/createNewStudent', { name, email })
+        axios.post(`${API_BASE}/createNewStudent`, { name, email })
             .then(res => {
                 console.log(res);
                 navigate('/');

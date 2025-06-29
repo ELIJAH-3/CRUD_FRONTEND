@@ -1,18 +1,19 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+const API_BASE = process.env.REACT_APP_API_URL;
 
 function UpdateStudent() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const {id}= useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
 
     function handleSubmit(event) {
         console.log('UpdateStudent.js: handling Submit Event')
         console.log('UpdateStudent.js: Values to be updated are- name=' + name + ', email=' + email + ` with id=${id}`)
         event.preventDefault();
-        axios.put(`http://localhost:8081/updateExistingStudent/${id}`, {name, email }) //call to the backend
+        axios.put(`${API_BASE}/updateExistingStudent/${id}`, { name, email }) //call to the backend
             .then(res => {
                 console.log(res);
                 navigate('/');
